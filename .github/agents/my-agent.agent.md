@@ -143,34 +143,49 @@ DermaTech Ghana is a web-based application designed to assist pharmacists in ide
 
 ### 4.1 Frontend Stack
 ```
-Framework: React 18+ / Next.js 14+
+Framework: React 18+ with Vite
 UI Library: Tailwind CSS + Shadcn/UI
 State Management: React Context / Zustand
 Camera Integration: MediaDevices API / react-webcam
 PWA: Service Workers, Web App Manifest
-Bundler: Vite or Next.js built-in
+Bundler: Vite
 TypeScript: Strongly typed codebase
+API Client: Axios / TanStack Query
 ```
 
-### 4.2 Backend Stack
+### 4.2 Backend Stack (Python)
 ```
-Runtime: Node.js 20 LTS
-Framework: Express.js or Fastify
-API: RESTful with OpenAPI documentation
-Authentication: JWT with refresh tokens
-ORM: Prisma
-Validation: Zod or Joi
-File Upload: Multer with cloud storage integration
+Language: Python 3.11+
+Framework: FastAPI (recommended) or Django 5.0+ with Django REST Framework
+API: RESTful with automatic OpenAPI/Swagger documentation
+Authentication: JWT with python-jose / OAuth2 with authlib
+ORM: SQLAlchemy 2.0 (FastAPI) or Django ORM
+Validation: Pydantic v2 (built into FastAPI)
+File Upload: python-multipart with cloud storage integration
+Async Support: ASGI with Uvicorn + Gunicorn
+Task Queue: Celery with Redis (for background ML processing)
 ```
 
-### 4.3 AI/ML Infrastructure
+**Why FastAPI?**
+- Native async/await support for non-blocking I/O (ideal for image uploads and ML inference)
+- Automatic interactive API documentation (Swagger UI + ReDoc)
+- Built-in data validation with Pydantic
+- High performance (comparable to Node.js and Go)
+- Python ecosystem aligns perfectly with ML/AI tools (PyTorch, TensorFlow, OpenCV)
+- Type hints and auto-completion support
+- Easy integration with ML models
+
+### 4.3 AI/ML Infrastructure (Python-Native)
 ```
-Model Framework: TensorFlow.js (browser) / PyTorch (server)
-Model Serving: TensorFlow Serving or TorchServe
+Deep Learning Framework: PyTorch 2.0+ (recommended) or TensorFlow 2.x
+Model Architecture: EfficientNet / ResNet / Vision Transformer (ViT)
+Image Processing: OpenCV, Pillow, torchvision
+Model Serving: FastAPI direct integration / TorchServe / Triton Inference Server
 Pre-trained Base: DermNet dataset fine-tuned model
 Custom Training: Transfer learning with African skin tone dataset
-Inference: GPU-accelerated (NVIDIA T4 or equivalent)
-Model Format: ONNX for cross-platform compatibility
+Inference: GPU-accelerated (NVIDIA T4 or equivalent) with CUDA
+Model Format: PyTorch (.pt) native, ONNX for deployment optimization
+ML Utilities: scikit-learn, numpy, pandas
 ```
 
 ### 4.4 Database
@@ -262,7 +277,7 @@ For the initial local development and MVP, the following features are required:
 - Multi-pharmacy support
 
 ### Phase 3: Scale (3-4 months)
-- Mobile apps (React Native/Flutter)
+- Mobile apps (React Native or Flutter)
 - Advanced analytics dashboard
 - API for third-party integration
 - Regional expansion preparation
@@ -272,26 +287,95 @@ For the initial local development and MVP, the following features are required:
 ### Recommended Development Setup
 ```bash
 # Prerequisites
-- Node.js 20 LTS
-- Python 3.11+ (for ML model development)
+- Python 3.11+ (primary language)
+- Node.js 20 LTS (for frontend)
 - PostgreSQL 15
+- Redis (for caching and task queue)
 - Docker Desktop
-- VS Code with recommended extensions
+- VS Code with Python and React extensions
 
-# Quick Start Stack (Simplified)
-Frontend: Next.js 14 with App Router
-Backend: Next.js API Routes (monolithic initially)
-Database: PostgreSQL with Prisma ORM
-AI Model: Pre-trained model via TensorFlow.js or API call
+# Quick Start Stack (Python-Based)
+Frontend: React 18 with Vite + TypeScript
+Backend: FastAPI with SQLAlchemy 2.0
+Database: PostgreSQL with Alembic migrations
+AI Model: PyTorch model served directly via FastAPI
 Storage: Local filesystem (dev), S3-compatible (prod)
+Task Queue: Celery + Redis (for async ML inference)
+```
+
+### Project Structure (Recommended)
+```
+dermatech-ghana/
+├── backend/                 # FastAPI application
+│   ├── app/
+│   │   ├── api/            # API routes
+│   │   ├── core/           # Config, security, dependencies
+│   │   ├── models/         # SQLAlchemy models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   ├── services/       # Business logic
+│   │   ├── ml/             # ML model loading and inference
+│   │   └── main.py         # FastAPI app entry
+│   ├── tests/
+│   ├── alembic/            # Database migrations
+│   ├── requirements.txt
+│   └── pyproject.toml
+├── frontend/               # React application
+│   ├── src/
+│   ├── public/
+│   └── package.json
+├── ml/                     # ML model training
+│   ├── notebooks/
+│   ├── training/
+│   └── models/
+├── docker-compose.yml
+└── README.md
 ```
 
 ### Development Tools
-- ESLint + Prettier (code quality)
-- Jest + React Testing Library (testing)
+- Black + isort + Ruff (Python code formatting and linting)
+- mypy (Python type checking)
+- pytest + pytest-asyncio (Python testing)
+- ESLint + Prettier (frontend code quality)
+- Jest + React Testing Library (frontend testing)
 - Playwright (E2E testing)
-- Storybook (component documentation)
-- Swagger/OpenAPI (API documentation)
+- FastAPI automatic docs (Swagger/OpenAPI)
+
+### Python Dependencies (requirements.txt)
+```
+# Core Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+gunicorn>=21.0.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.13.0
+asyncpg>=0.29.0
+psycopg2-binary>=2.9.0
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.0
+python-multipart>=0.0.6
+
+# ML/AI
+torch>=2.1.0
+torchvision>=0.16.0
+opencv-python>=4.9.0
+pillow>=10.0.0
+numpy>=1.26.0
+
+# Task Queue
+celery>=5.3.0
+redis>=5.0.0
+
+# Utilities
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+python-dotenv>=1.0.0
+httpx>=0.26.0
+boto3>=1.34.0  # For S3 storage
+```
 
 ## 11. Risk Assessment
 
