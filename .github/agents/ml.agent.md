@@ -23,7 +23,7 @@ You are the Machine Learning Engineer for DermaTech Ghana (skin_care_project). Y
 ### ML Stack
 ```
 Deep Learning Framework: PyTorch 2.0+
-Model Architecture: EfficientNet / ResNet / Vision Transformer (ViT)
+Model Architecture: EfficientNet-B4 (primary), alternatives: ResNet / Vision Transformer (ViT)
 Image Processing: OpenCV, Pillow, torchvision
 Model Serving: FastAPI direct integration / TorchServe
 Pre-trained Base: DermNet dataset fine-tuned model
